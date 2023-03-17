@@ -1,4 +1,4 @@
-import { faAdd, faBars, faBolt, faCheck, faDashboard, faDatabase, faDollar, faEdit, faEnvelope, faExclamationCircle, faFile, faFilePdf, faGear, faMoneyCheck, faPeopleCarryBox, faPeopleGroup, faPowerOff, faPrint, faRemove, faSave, faSearch, faShare, faShareAlt, faTimeline, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faArrowAltCircleLeft, faBars, faBolt, faCheck, faDashboard, faDatabase, faDollar, faEdit, faEnvelope, faExclamationCircle, faFile, faFilePdf, faGear, faMoneyCheck, faPeopleCarryBox, faPeopleGroup, faPowerOff, faPrint, faRemove, faSave, faSearch, faShare, faShareAlt, faTimeline, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useRef, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +13,7 @@ import logo from '../Assets/Images/logo.png';
 
 
 
-function Staff() {
+function StaffTable() {
     let navigate=useNavigate();
 
     const {setmsg, setFooter, setTitle, handleShow}=useContext(GlobalContext);
@@ -220,8 +220,8 @@ axios.post(Config.backend.endPoint.root+'staff.php', {first_name:firstName, surn
 
 <button className='btn text-primary' onClick={handlePrint}> <FontAwesomeIcon icon={faPrint}></FontAwesomeIcon> </button>
 <button className='btn text-light' onClick={()=>{
-navigate('/stafftable')
-}}> <FontAwesomeIcon icon={faDatabase}></FontAwesomeIcon> Data Table</button>
+navigate('/staff')
+}}> <FontAwesomeIcon icon={faArrowAltCircleLeft}></FontAwesomeIcon> </button>
 </span>
 
 
@@ -461,12 +461,68 @@ Religion
                                 setsearchTeerm(e.target.value)
                             }} /></div></div><br/><br/>
                             <div className="table-responsive">
-                            <ul className='list-group' style={{fontSize:'small', padding:'10px'}} ref={componentRef}>
-                    
-                    <h4 className=' text-danger'> <img alt='logo' src={logo} style={{height:'40px', width:'50px'}} /> Roicomsat  Staff {new Date().getFullYear()}</h4>
-                    <h4 className='badge bg-dark text-light'>Staff Management System</h4>
-                    
-                                     {
+                                <table ref={componentRef} className='table table-dark table-striped table-hover' style={{fontSize:'x-small'}}>
+<thead className='bg-dark text-light'>
+<th>
+      Passport
+    </th>
+    <th>
+        Staff ID
+    </th>
+    <th>
+        Salary
+    </th>
+    <th>
+        First Name
+    </th>
+    <th>
+        Other Names
+    </th>
+    <th>
+      Surname
+    </th>
+    <th>
+      Designation
+    </th>
+    <th>
+      Gender
+    </th>
+    <th>
+      DOB
+    </th>
+    <th>
+      Marital
+    </th>
+    <th>
+      Religion
+    </th>
+    <th>
+      Phone
+    </th>
+    <th>
+      E-Mail
+    </th>
+    <th>
+      Address
+    </th>
+    <th>
+      Account No
+    </th>
+    <th>
+      Bank
+    </th>
+    <th>
+      eNaira
+    </th>
+    <th>
+      Guarantor
+    </th>
+    <th>
+      Guarantor Phone
+    </th>
+</thead>
+<tbody>
+{
                                             staff.filter((sta)=>{
                                                 if(searchTeerm===''){
 return sta
@@ -477,57 +533,72 @@ return sta
                                                     return null
                                                 }
                                             }).map((staf, key)=>{
-                                                return          <li key={key} className='list-group-item d-flex justify-content-between align-items-center' style={{marginBottom:'25px'}}>
-                                                <span><img style={{height:'70px', borderRadius:'50%'}} alt={staf.first_name} src={staf.image}/></span> <span>{staf.staff_id}</span> <span>{staf.first_name} {staf.other_names} {staf.surname}</span>   <span>{staf.gender}</span> <span>{staf.designation}</span> <span> <button className='btn text-primary'>
-                                                <FontAwesomeIcon icon={faEdit}></FontAwesomeIcon>
-                                              </button>
-                                              <button className='btn text-danger' onClick={()=>{
-                                                handleShow();
-                                                setTitle(<h3>Confirm</h3>);
-                                                setmsg(<>Are you sure you want to Delete?</>);
-                                                setFooter(<>
-                                                <button className='btn btn-danger' onClick={()=>{
-                                                  axios.get(Config.backend.endPoint.root+'staff.php?id='+staf.id).then((response)=>{
-                                                    if(response.data.toLowerCase().includes('success')){
-                                                      handleShow();
-          setFooter(<></>)
-          setTitle(<>
-  Alert
-   </>);   
-   setmsg(<>
-    <div className='alert alert-success'>
-     <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> {response.data}
-    </div>
-               </>
-             
-               );
-                                                    }else{
-                                                      handleShow();
-                                                      setFooter(<></>)
-                                                      setTitle(<>
-                                              Alert
-                                               </>);   
-                                               setmsg(<>
-                                                <div className='alert alert-danger'>
-                                                 <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon> {response.data}
-                                                </div>
-                                                           </>
-                                                           );
-
-                                                    }
-                                                  })
-                                                }}>
-                                                  Delete
-                                                </button>
-                                                </>)
-                                              }}>
-                                                <FontAwesomeIcon icon={faRemove}></FontAwesomeIcon>
-                                              </button></span>
-                                                                    </li>
+                                                return    <tr>  
+                                                <td>
+      <img style={{height:'30px', width:'30px', borderRadius:'50%'}} alt={staf.first_name} src={staf.image}/>
+    </td>
+    <td>
+      {staf.staff_id}
+    </td>
+    <td>
+        {staf.salary}
+    </td>
+    <td>
+     {staf.first_name}
+    </td>
+    <td>
+      {staf.other_names}
+    </td>
+    <td>
+      {staf.surname}
+    </td>
+    <td>
+      {staf.designation}
+    </td>
+    <td>
+      {staf.gender}
+    </td>
+    <td>
+   {staf.dob}
+    </td>
+    <td>
+      {staf.marital}
+    </td>
+    <td>
+      {staf.religion}
+    </td>
+    <td>
+      {staf.phone}
+    </td>
+    <td>
+  {staf.email}
+    </td>
+    <td>
+      {staf.address}
+    </td>
+    <td>
+   {staf.accno}
+    </td>
+    <td>
+      {staf.bank}
+    </td>
+    <td>
+      {staf.enaira}
+    </td>
+    <td>
+      {staf.guarantor_name}
+    </td>
+    <td>
+    {staf.guarantor_phone}
+    </td>
+</tr>
+                                                
+                                              
                                             })
                                         }
-                                       
-                                 </ul>
+  </tbody>
+                                </table>
+                         
                             </div>
                             
                         </div>
@@ -558,4 +629,4 @@ return sta
   )
 }
 
-export default Staff
+export default StaffTable

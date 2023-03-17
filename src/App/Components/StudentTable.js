@@ -1,4 +1,4 @@
-import { faAdd, faBars,  faCheck, faDashboard, faDatabase, faDollar, faEdit, faEnvelope,  faFile, faFilePdf, faGear, faMoneyCheck, faPeopleCarryBox, faPeopleGroup, faPowerOff, faPrint, faRemove, faSave, faSearch, faShare, faShareAlt,  faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faBars,  faCheck, faDashboard, faDatabase, faDollar, faEdit, faEnvelope,  faFile, faFilePdf, faGear, faMoneyCheck, faPeopleCarryBox, faPeopleGroup, faPowerOff, faPrint, faRemove, faSave, faSearch, faShare, faShareAlt,  faTimes, faArrowAltCircleLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState, useEffect, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import pro from '../Assets/Images/pro.png';
 import logo from '../Assets/Images/logo.png';
 
 
-function Students() {
+function StudentTable() {
     let navigate=useNavigate();
   const {setmsg, setFooter, setTitle, handleShow}=useContext(GlobalContext);
     const [form, setform] = useState(false);
@@ -216,8 +216,8 @@ handleShow();
 
 <button className='btn text-dark'onClick={handlePrint}> <FontAwesomeIcon icon={faPrint}></FontAwesomeIcon> </button>
 <button className='btn text-light' onClick={()=>{
-navigate('/studenttable');
-}}> <FontAwesomeIcon icon={faDatabase}></FontAwesomeIcon> Data Table</button>
+navigate('/students')
+}}> <FontAwesomeIcon icon={faArrowAltCircleLeft}></FontAwesomeIcon> Back</button>
 
 </span>
                             </div>
@@ -573,78 +573,148 @@ Select Programme
                             }} /></div></div><br/><br/>
                             <div class="table-responsive">
                                
-                  <ul className='list-group' style={{fontSize:'small', padding:'7px'}} ref={componentRef}>
-                    
-                                <h4 className=' text-primary'> <img alt='logo' src={logo} style={{height:'40px', width:'50px'}} /> Roicomsat ICT Academy Students {new Date().getFullYear()}</h4>
-                                <h4 className='badge bg-danger text-light'>Students Management System</h4>
-                                
-                                  
-                                     {
+                            <table ref={componentRef} className='table table-dark table-striped table-hover' style={{fontSize:'x-small'}}>
+<thead className='bg-dark text-light'>
+<th>
+      Passport
+    </th>
+    <th>
+        Reg No
+    </th>
+    <th>
+        Fee Paid
+    </th>
+    <th>
+        First Name
+    </th>
+    <th>
+        Other Names
+    </th>
+    <th>
+      Surname
+    </th>
+    <th>
+      Programme
+    </th>
+    <th>
+      Gender
+    </th>
+    <th>
+      DOB
+    </th>
+    <th>
+      Marital
+    </th>
+    <th>
+Date Admitted    </th>
+
+<th>
+Graduation   </th>
+    <th>
+      Phone
+    </th>
+    <th>
+      E-Mail
+    </th>
+    <th>
+      Address
+    </th>
+    <th>
+      LGA
+    </th>
+    <th>
+      State
+    </th>
+  
+    <th>
+      Guarantor
+    </th>
+    <th>
+      Guarantor Phone
+    </th>
+</thead>
+<tbody>
+{
                                             students.filter((sta)=>{
                                                 if(searchTeerm===''){
 return sta
                                                 }
-                                           else if(sta.reg_no.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.first_name.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.surname.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.other_names.toLowerCase().includes(searchTeerm.toLowerCase())|| sta.email.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.phone.toLowerCase().includes(searchTeerm.toLowerCase())){
+                                           else if(sta.first_name.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.surname.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.other_names.toLowerCase().includes(searchTeerm.toLowerCase())|| sta.email.toLowerCase().includes(searchTeerm.toLowerCase()) || sta.phone.toLowerCase().includes(searchTeerm.toLowerCase())){
                                                     return sta
                                                 }else{
                                                     return null
                                                 }
                                             }).map((staf, key)=>{
-                                                return         <li key={key} className='list-group-item d-flex justify-content-between align-items-center' style={{marginBottom:'25px'}}>
-                                                <span><img style={{height:'50px', borderRadius:'50%'}} alt={staf.first_name} src={staf.image}/></span> <span>{staf.reg_no}</span> <span> {staf.surname} {staf.first_name} </span> <span>{staf.gender}</span> <span>{staf.programme}</span> <span>
-                                              <button className='btn text-danger' onClick={()=>{
-                                                handleShow();
-                                                setTitle(<h3>Confirm</h3>);
-                                                setmsg(<>Are you sure you want to Delete?</>);
-                                                setFooter(<>
-                                                <button className='btn btn-danger' onClick={()=>{
-                                                  axios.post('https://verifyme.com.ng/backend/students.php?delete=delete&&reg_no='+staf.reg_no).then((response)=>{
-                                                  console.log(response.data)  
-                                                  if(response.data.toLowerCase().includes('successfully')){
-                                                      handleShow();
-          setFooter(<></>)
-          setTitle(<>
-  Alert
-   </>);   
-   setmsg(<>
-    <div className='alert alert-success'>
-     <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> {response.data}
-    </div>
-               </>
-             
-               );
-                                                    }else{
-                                                      handleShow();
-                                                      setFooter(<></>)
-                                                      setTitle(<>
-                                              Alert
-                                               </>);   
-                                               setmsg(<>
-                                                <div className='alert alert-danger'>
-                                                 <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon> {response.data}
-                                                </div>
-                                                           </>
-                                                           );
-
-                                                    }
-                                                  })
-                                                }}>
-                                                  Delete
-                                                </button>
-                                                </>)
-                                              }}>
-                                                <FontAwesomeIcon icon={faRemove}></FontAwesomeIcon>
-                                              </button></span>
-                                                                    </li>
-                                            
+                                                return    <tr>  
+                                                <td>
+      <img style={{height:'30px', width:'30px', borderRadius:'50%'}} alt={staf.first_name} src={staf.image}/>
+    </td>
+    <td>
+      {staf.reg_no}
+    </td>
+    <td>
+        {staf.fee_paid}
+    </td>
+    <td>
+     {staf.first_name}
+    </td>
+    <td>
+      {staf.other_names}
+    </td>
+    <td>
+      {staf.surname}
+    </td>
+    <td>
+      {staf.programme}
+    </td>
+    <td>
+      {staf.gender}
+    </td>
+    <td>
+   {staf.dob}
+    </td>
+    <td>
+      {staf.marital}
+    </td>
+    <td>
+      {staf.date_admitted}
+    </td>
+    <td>
+      {staf.graduation}
+    </td>
+    <td>
+      {staf.phone}
+    </td>
+    <td>
+  {staf.email}
+    </td>
+    <td>
+      {staf.address}
+    </td>
+    <td>
+   {staf.lga}
+    </td>
+    <td>
+      {staf.state}
+    </td>
+   
+    <td>
+      {staf.guarantor}
+    </td>
+    <td>
+    {staf.guarantor_phone}
+    </td>
+</tr>
                                                 
-                                                
-                                               
+                                              
                                             })
                                         }
-                                       
-                               
-                                </ul>
+  </tbody>
+                                </table>
+                         
+
+
+
                             </div>
                             
                         </div>
@@ -675,4 +745,4 @@ return sta
   )
 }
 
-export default Students
+export default StudentTable

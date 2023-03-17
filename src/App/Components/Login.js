@@ -13,7 +13,7 @@ function Login() {
     const [username, setUsername]=useState('');
     const [password, setpassword] = useState('');
     const login =()=>{
-if (password==='123456' && username==='admin'){
+if (password==='roiadmin123' && username==='admin_roi'){
     navigate('/dashboard');
    
 }else{
@@ -66,9 +66,7 @@ handleShow()
                                             <label className="checkbox-inline">
                                                 <input type="checkbox" /> Remember me
                                             </label>
-                                            <span className="pull-right">
-                                                   <a href="/#/index.html" >Forget password ? </a> 
-                                            </span>
+                                           
                                         </div>
                                      
                                      <button className="btn btn-primary " onClick={()=>{

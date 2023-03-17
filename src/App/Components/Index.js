@@ -16,6 +16,10 @@ import { ContextProvider } from '../Context/Api';
 import Settings from './Settings';
 import StudentUpdate from './StudentUpdate';
 import StudentLogin from './StudentLogin';
+import StudentWait from './StudentWait';
+import StaffTable from './StaffTable';
+import StudentTable from './StudentTable';
+import Attendance from './Attendance';
 
 
 function Index() {
@@ -33,6 +37,10 @@ function Index() {
       {path:'/settings', element:<Settings/>},
       {path:'/updatestudent', element:<StudentUpdate/>},
       {path:'/studentlogin', element:<StudentLogin/>},
+      {path:'/wait', element:<StudentWait/>},
+      {path:'/stafftable', element:<StaffTable/>},
+      {path:'/studenttable', element:<StudentTable/>},
+      {path:'/attendance', element:<Attendance/>},
      
       
       

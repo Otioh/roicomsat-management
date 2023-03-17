@@ -5,6 +5,7 @@ import logo from '../Assets/Images/logo.png';
 import { useNavigate } from 'react-router-dom';
 import GlobalContext from '../Context/Api';
 import axios from 'axios';
+import { funSeque } from '../flamejs';
 
 
 function StudentLogin() {
@@ -28,7 +29,18 @@ function StudentLogin() {
         axios.get('https://verifyme.com.ng/backend/students.php?id='+id).then((response)=>{
             if(response.data.length>0){
                 setstu_user(response.data[0])
-                navigate('/updatestudent');
+           funSeque({delaySeconds:2}, ()=>{
+            navigate('/updatestudent');
+         
+           },
+           ()=>{
+            navigate('/wait');
+         
+           },
+           ()=>{
+            navigate('/updatestudent');
+           }
+           )
             }else{
                 setTitle(<h3>
                     Error

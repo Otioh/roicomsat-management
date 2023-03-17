@@ -8,56 +8,38 @@ import GlobalContext from '../Context/Api';
 import { useReactToPrint } from 'react-to-print';
 import pro from '../Assets/Images/pro.png';
 import logo from '../Assets/Images/logo.png';
+import { funSeque } from '../flamejs';
 
 
 function StudentUpdate() {
     let navigate=useNavigate();
   const {setmsg, setFooter, setTitle, handleShow, stu_user}=useContext(GlobalContext);
-    const [form, setform] = useState(false);
+ 
 
 
-    const componentRef = useRef();
-  const handlePrint = useReactToPrint({
-    content: () => componentRef.current,
-  });
 
-const [programmes, setprogrammes] = useState([]);
-  const [students, setStudents]=useState([]);
-    const [searchTeerm, setsearchTeerm] = useState('');
-  const [programme, setprogramme]=useState('');
-  const [pro_id, setpro_id]=useState('');
-    const [firstName, setfirstName] = useState('');
-    const [surname, setsurname] = useState('');
-    const [otherNames, setotherNames] = useState('');
-    const [gender, setgender] = useState('');
-    const [dob, setdob] = useState('');
-    const [marital, setmaritalStatus] = useState('');
-    const [phone, setphone] = useState('');
-      const [email, setemail] = useState('');
-      const [address, setaddress] = useState('');
-      const [lga, setlga] = useState('');
-      const [state, setstate] = useState('');
-      const [image, setimage] = useState(pro);
-      const [guarantor, setguarantorname] = useState('');
-      const [guarantor_phone, setguarantorphone] = useState('');
-      const [guarantor_image, setguarantorimage] = useState(pro);
-      const [guarantor_address, setguarantor_address]=useState('');
-      const [date_admitted, setdate_admitted] = useState('');
-      const [graduation, setgraduation] = useState('');
-  
-  useEffect(() => {
-  axios.get('https://verifyme.com.ng/backend/students.php').then((response)=>{
-    setStudents(response.data)
+    const [firstName, setfirstName] = useState(stu_user.first_name);
+    const [surname, setsurname] = useState(stu_user.surname);
+    const [otherNames, setotherNames] = useState(stu_user.other_names);
 
-  })
-  axios.get('https://verifyme.com.ng/backend/programmes.php ').then((response)=>{
-    setprogrammes(response.data)
-  })
-  });
+    const [dob, setdob] = useState(stu_user.dob);
 
+      const [email, setemail] = useState(stu_user.email);
+      const [address, setaddress] = useState(stu_user.address);
+      const [lga, setlga] = useState(stu_user.lga);
+      const [state, setstate] = useState(stu_user.state);
+      const [image, setimage] = useState(stu_user.image);
+      const [guarantor, setguarantorname] = useState(stu_user.guarantor);
+      const [guarantor_phone, setguarantorphone] = useState(stu_user.guarantor_phone);
+
+      const [guarantor_address, setguarantor_address]=useState(stu_user.guarantor_address);
+      const [date_admitted, setdate_admitted] = useState(stu_user.date_admitted);
+      const [graduation, setgraduation] = useState(stu_user.graduation);
+
+   
 
 const postStudent=()=>{
-if(firstName===''||surname===""||otherNames===""||image===""||dob===""||address===""||lga===""||state===""||guarantor===""||guarantor_address===""||guarantor_phone===""||date_admitted===""|| graduation===""){
+if(!image.toLowerCase().includes('verifyme') ||dob===""||address===""||lga===""||state===""||guarantor===""||guarantor_address===""||guarantor_phone===""||date_admitted===""|| graduation===""){
   handleShow();
   setFooter(<></>)
   setTitle(<>
@@ -65,11 +47,11 @@ if(firstName===''||surname===""||otherNames===""||image===""||dob===""||address=
    </>);
      setmsg(<>
       <div className='alert alert-danger'>
-       <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon> Provide the Required data for Image, First Name, Surname, Other Names, Date of Birth, Address, LGA, State, Guarantor, Guarantor Address, Guarantor Phone, Date Admitted & Date of Graduation 
+       <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon> Provide the Required data for Image,  Date of Birth, Address, LGA, State, Guarantor, Guarantor Address, Guarantor Phone, Date Admitted & Date of Graduation 
       </div>
                  </>
                  );
-}
+}else{
   
 axios.post('https://verifyme.com.ng/backend/students.php', {update:'update', first_name:firstName, surname, other_names:otherNames, email, image,  dob, address, lga, state, guarantor,  guarantor_phone, guarantor_address, date_admitted, graduation, reg_no:stu_user.reg_no}, {
 headers:{
@@ -91,7 +73,8 @@ handleShow();
                       </>
                     
                       );
-                    setform(false)
+                      navigate('/studentlogin')
+                 
                     }
                       else{
                         setmsg(<>
@@ -100,10 +83,11 @@ handleShow();
                           </div>
                                      </>
                                      );
+
                       }         
 })
 }
-
+}
 
 
 
@@ -140,7 +124,9 @@ handleShow();
 
                             <div class="animated">
             <div class="">
-              <h5 class="">{stu_user.first_name} [{stu_user.reg_no}] || {stu_user.programme} </h5>
+            <img src={stu_user.image} alt={'stu_user.first_name'} style={{height:'120px', float:'right'}} />
+              <h4>Reg No: {stu_user.reg_no}</h4>
+              <h5 class="">{stu_user.first_name} {stu_user.surname}  || {stu_user.programme} </h5>
 
               <div class="text-center" style={{float:'right'}}>
                   <button type="submit" class="btn btn-outline-success" onClick={postStudent} > <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> Save </button>
@@ -148,21 +134,7 @@ handleShow();
                 </div><br/><br/>
 
               <div class="row g-3">
-              <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="First Name" value={firstName} onChange={(e)=>{
-                    setfirstName(e.target.value)
-                  }} />
-                </div>
-                <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="Surname" value={surname} onChange={(e)=>{
-                    setsurname(e.target.value)
-                  }}/>
-                </div>
-                <div class="col-md-4">
-                  <input type="text" class="form-control" placeholder="Other Names" value={otherNames} onChange={(e)=>{
-                    setotherNames(e.target.value)
-                  }}/>
-                </div>
+             
                 <div class="col-md-6">
                     <label>
                         Gender:
@@ -171,7 +143,7 @@ handleShow();
                 </div>
                 <div class="col-md-6">
                     <label>
-                        Date of Birth
+                        Date of Birth :
                     </label><br/>
                   <input type={'date'} class="form-control" placeholder="Date of Birth" value={dob} onChange={(e)=>{
                     setdob(e.target.value)
@@ -188,14 +160,17 @@ handleShow();
                               </div>
                         
                 <div class="col-md-6">
+                <label>
+                        E-Mail : 
+                    </label><br/>
                   <input type="email" class="form-control" placeholder="Email" value={email} onChange={(e)=>{
                     setemail(e.target.value)
                   }}/>
                 </div>
                 <div class="col-md-6">
     <label>
-      <img src={image} alt='' style={{height:'80px'}} />
-      Passport Photograph 
+      <img src={image} alt={'Passport'} style={{height:'80px'}} />
+       Photograph 
     </label>
                 <input type="file" class="form-control"   onChange={(e)=>{
                  if(email===''){
@@ -221,7 +196,36 @@ handleShow();
                       "Content-Type":"multipart/form-data"
                     } 
                     }).then((response)=>{
+                   if(response.data.toLowerCase().includes('verifyme')){
                     setimage(response.data)
+                 
+                    
+                    setmsg(<>
+                      <div className='alert alert-success'>
+                       <FontAwesomeIcon icon={faCheck}></FontAwesomeIcon> Image Uploaded Successfully
+    
+                      </div>
+                                 </>
+                               
+                                 );
+                    setTitle(<h3>Success</h3>);
+                    setFooter(<></>);
+                    handleShow();
+                
+                   }else{
+                     setmsg(<>
+                    <div className='alert alert-danger'>
+                     <FontAwesomeIcon icon={faTimes}></FontAwesomeIcon> {response.data}
+  
+                    </div>
+                               </>
+                             
+                               );
+                  setTitle(<h3>Error</h3>);
+                  setFooter(<></>);
+                  handleShow();
+                   }
+           
                    
                   })
                   
@@ -239,128 +243,21 @@ handleShow();
                 </div>
                 <div class="col-md-6">
                   <span>
-                  <label>Date Admitted</label>
-                  <select  class="form-select" placeholder="Date Admitted"  onChange={(e)=>{
+                  <label>Date Admitted: </label>
+                  <input  className='form-control' value={date_admitted} onChange={(e)=>{
                     setdate_admitted(e.target.value)
-                  }}>
-                    <option>
-                      Month
-                    </option>
-                    <option value="January">
-                      January
-                    </option>
-                    <option value="February">
-                      February
-                    </option>
-                    <option value="March">
-                      March
-                    </option>
-                    <option value="April">
-                      April
-                    </option>
-                    <option value="May">
-                      May
-                    </option>
-                    <option value="June">
-                      June
-                    </option>
-                    <option value="July">
-                      July
-                    </option>
-                    <option value="August">
-                      August
-                    </option>
-                    <option value="September">
-                      September
-                    </option>
-                    <option value="October">
-                      October
-                    </option>
-                    <option value="November">
-                      November
-                    </option>
-                    <option value="December">
-                      December
-                    </option>
-                 
-                    </select>
-                    <select className='form-select' onChange={(e)=>{
-                      setdate_admitted(date_admitted+'/'+e.target.value);
-                    }}>
-                      <option>Year</option>
-                      <option value="2023">
-                        2023
-                      </option>
-                      <option value="2022">
-                        2022
-                      </option>
-                      <option value="2021">
-                        2021
-                      </option>
-                    </select></span>
+                  }} type={'month'} />
+                  
+                    </span>
                 </div>
 
                 <div class="col-md-6">
                   <span>
-                  <label>Graduation</label>
-                  <select  class="form-select" placeholder="Date Admitted" onChange={(e)=>{
+                  <label>Graduation:</label>
+                  <input type='month' className='form-control' value={graduation} onChange={(e)=>{
                     setgraduation(e.target.value)
-                  }}>
-                    <option>
-                      Month
-                    </option>
-                    <option value="January">
-                      January
-                    </option>
-                    <option value="February">
-                      February
-                    </option>
-                    <option value="March">
-                      March
-                    </option>
-                    <option value="April">
-                      April
-                    </option>
-                    <option value="May">
-                      May
-                    </option>
-                    <option value="June">
-                      June
-                    </option>
-                    <option value="July">
-                      July
-                    </option>
-                    <option value="August">
-                      August
-                    </option>
-                    <option value="September">
-                      September
-                    </option>
-                    <option value="October">
-                      October
-                    </option>
-                    <option value="November">
-                      November
-                    </option>
-                    <option value="December">
-                      December
-                    </option>
-                 
-                    </select>
-                    <select className='form-select' onChange={(e)=>{
-                      setgraduation(graduation+'/'+e.target.value);
-                    }}>
-                      <option>Year</option>
-                      <option value="2023">
-                        2023
-                      </option>
-                      <option value="2022">
-                        2022
-                      </option>
-                      <option value="2021">
-                        2021
-                      </option>
-                    </select></span>
+                  }} />
+                 </span>
                 </div>
 
 
@@ -412,9 +309,7 @@ handleShow();
               </div>
 
             </div>
-          </div>
-        
-               
+          </div>       
                         </div>
                 
 
